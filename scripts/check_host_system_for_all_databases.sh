@@ -82,6 +82,29 @@ install_sqlite(){
     which sqlite3
 }
 
+install_mongodb(){
+
+    which mongod | grep '/usr/bin/mongod' &> /dev/null
+    if [ $? == 0 ]; then
+       echo -e "${green}-->Mongodb is already installed...${clear}!"
+    else
+       echo -e "${blue}-->Status:Install mongodb... ${clear}!"
+       apt-get install gnupg curl -y
+       curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
+       echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+       apt-get update
+       apt-get install -y mongodb-org
+       #Prevent automatic updates to MongoDB packages:
+       echo "mongodb-org hold" | sudo dpkg --set-selections
+       echo "mongodb-org-database hold" | sudo dpkg --set-selections
+       echo "mongodb-org-server hold" | sudo dpkg --set-selections
+       echo "mongodb-mongosh hold" | sudo dpkg --set-selections
+       echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
+       echo "mongodb-org-tools hold" | sudo dpkg --set-selections
+    fi
+    which mongod
+}
+
 initialize
 updatesystem
 install_postgresql
