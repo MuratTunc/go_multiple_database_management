@@ -46,36 +46,47 @@ install_postgresql(){
     which psql | grep '/usr/bin/psql' &> /dev/null
     if [ $? == 0 ]; then
        echo -e "${green}-->Postgresql is already installed...${clear}!"
-       which psql
-       systemctl start postgresql.service 
     else
        echo -e "${blue}-->Status:Install Postgresql... ${clear}!"
        apt install postgresql postgresql-contrib -y
-       systemctl start postgresql.service
     fi
 
+    which psql
+    systemctl start postgresql.service 
     systemctl status postgresql.service
 }
 
 install_mysql(){
 
-    which mysqld | grep '/usr/bin/mysqld' &> /dev/null
+    which mysqld | grep '/usr/sbin/mysqld' &> /dev/null
     if [ $? == 0 ]; then
-       echo -e "${green}-->Postgresql is already installed...${clear}!"
-       which psql 
+       echo -e "${green}-->Mysql is already installed...${clear}!"
     else
-       echo -e "${blue}-->Status:Install Postgresql... ${clear}!"
-       sudo apt install mysql-server -y
-       sudo systemctl start mysql.service
+       echo -e "${blue}-->Status:Install Mysql... ${clear}!"
+       apt install mysql-server -y
     fi
-
+    which mysqld
+    systemctl start mysql.service
     systemctl status mysql.service
+}
+
+install_sqlite(){
+
+    which sqlite3 | grep '/usr/bin/sqlite3' &> /dev/null
+    if [ $? == 0 ]; then
+       echo -e "${green}-->sqlite3 is already installed...${clear}!"
+    else
+       echo -e "${blue}-->Status:Install sqlite3... ${clear}!"
+       apt install sqlite3 -y
+    fi
+    which sqlite3
 }
 
 initialize
 updatesystem
 install_postgresql
 install_mysql
+install_sqlite
 
 
 
