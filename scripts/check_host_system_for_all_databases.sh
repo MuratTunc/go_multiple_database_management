@@ -128,6 +128,6 @@ initialize
 updatesystem
 install_postgresql  # Relational database
 install_mysql       # Relational database
+install_mariadb     # Columnar Relational database
 install_sqlite      # Server-less relational database
 install_mongodb     # NoSQL database
-install_mariadb     # Columnar Relational database
