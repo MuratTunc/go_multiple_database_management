@@ -36,12 +36,26 @@ updatesystem() {
     echo -e "${green}-->Status:Install curl... ${clear}!"
     sleep ${slp}
     apt install curl -y
-    echo -e "${green}-->Status:essential... ${clear}!"
+    echo -e "${green}-->Status:Install build essential... ${clear}!"
     sleep ${slp}
     apt install build-essential -y
 }
 
+postgresql(){
+
+
+    which psql | grep '/usr/bin/psql' &> /dev/null
+    if [ $? == 0 ]; then
+       echo -e "${green}-->Postgresql is already installed...${clear}!"
+       which psql 
+    else
+       echo -e "${blue}-->Status:Install Postgresql... ${clear}!"
+       apt install postgresql postgresql-contrib -y
+    fi
+}
+
 initialize
 updatesystem
+postgresql
 
 
