@@ -88,10 +88,12 @@ install_mongodb(){
     if [ $? == 0 ]; then
        echo -e "${green}-->Mongodb is already installed...${clear}!"
     else
-       echo -e "${blue}-->Status:Install mongodb... ${clear}!"
+       echo -e "${green}-->Status:Install mongodb... ${clear}!"
        apt-get install gnupg curl -y
-       curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg --dearmor -o /usr/share/keyrings/mongodb-server-7.0.gpg
-       echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+       curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+       sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+       --dearmor
+       echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
        apt-get update
        apt-get install -y mongodb-org
        #Prevent automatic updates to MongoDB packages:
@@ -102,6 +104,8 @@ install_mongodb(){
        echo "mongodb-org-mongos hold" | sudo dpkg --set-selections
        echo "mongodb-org-tools hold" | sudo dpkg --set-selections
     fi
+
+    sudo systemctl start mongod
     which mongod
 }
 
@@ -110,6 +114,7 @@ updatesystem
 install_postgresql
 install_mysql
 install_sqlite
+install_mongodb
 
 
 
