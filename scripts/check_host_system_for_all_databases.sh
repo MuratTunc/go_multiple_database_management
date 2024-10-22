@@ -106,15 +106,28 @@ install_mongodb(){
     fi
 
     sudo systemctl start mongod
+    sudo systemctl enable mongod
     which mongod
+}
+
+install_mariadb(){
+
+    which mariadb | grep '/usr/bin/mariadb' &> /dev/null
+    if [ $? == 0 ]; then
+       echo -e "${green}-->mariadb is already installed...${clear}!"
+    else
+       echo -e "${blue}-->Status:Install mariadb... ${clear}!"
+       apt install mariadb-server -y
+    fi
+    sudo systemctl start mariadb.service
+    sudo systemctl status mariadb.service
+    which mariadb
 }
 
 initialize
 updatesystem
-install_postgresql
-install_mysql
-install_sqlite
-install_mongodb
-
-
-
+install_postgresql  # Relational database
+install_mysql       # Relational database
+install_sqlite      # Server-less relational database
+install_mongodb     # NoSQL database
+install_mariadb     # Columnar Relational database
