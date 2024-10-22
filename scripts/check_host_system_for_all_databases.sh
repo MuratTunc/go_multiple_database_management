@@ -41,21 +41,41 @@ updatesystem() {
     apt install build-essential -y
 }
 
-postgresql(){
-
+install_postgresql(){
 
     which psql | grep '/usr/bin/psql' &> /dev/null
+    if [ $? == 0 ]; then
+       echo -e "${green}-->Postgresql is already installed...${clear}!"
+       which psql
+       systemctl start postgresql.service 
+    else
+       echo -e "${blue}-->Status:Install Postgresql... ${clear}!"
+       apt install postgresql postgresql-contrib -y
+       systemctl start postgresql.service
+    fi
+
+    systemctl status postgresql.service
+}
+
+install_mysql(){
+
+    which mysqld | grep '/usr/bin/mysqld' &> /dev/null
     if [ $? == 0 ]; then
        echo -e "${green}-->Postgresql is already installed...${clear}!"
        which psql 
     else
        echo -e "${blue}-->Status:Install Postgresql... ${clear}!"
-       apt install postgresql postgresql-contrib -y
+       sudo apt install mysql-server -y
+       sudo systemctl start mysql.service
     fi
+
+    systemctl status mysql.service
 }
 
 initialize
 updatesystem
-postgresql
+install_postgresql
+install_mysql
+
 
 
