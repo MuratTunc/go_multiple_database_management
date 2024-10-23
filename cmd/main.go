@@ -75,7 +75,7 @@ func ConnectMongoDb(config DatabaseConfig) (*mongo.Client, error) {
 }
 
 // ConnectMongoDb take mongodb url and related to connections
-func ConnectToMaria(config MariaConfig) (maria.DB, error) {
+func ConnectToMaria(config DatabaseConfig) (*sql.DB, error) {
 
 	dsn := "root:changeme@tcp(127.0.0.1:3306)/golang_101?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
@@ -139,7 +139,7 @@ func main() {
 	mariaConfig := DatabaseConfig{
 		Name:     "my_maria_db",
 		Host:     "localhost",
-		Port:     6306,
+		Port:     7306,
 		User:     "root",
 		Password: "password",
 	}
